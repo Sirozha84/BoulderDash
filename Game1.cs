@@ -80,8 +80,8 @@ namespace BoulderDash
             for (int i = 0; i < Map.Width; i++)
                 for (int j = 0; j < Map.Height; j++)
                     if (Map.M[i, j] == 1)
-                        spriteBatch.Draw(Graphics.Walls, new Vector2(i * Graphics.SpriteSize, j * Graphics.SpriteSize), Color.White);
-            spriteBatch.Draw(Graphics.Player, new Vector2(Player.X, Player.Y), Color.White);
+                        spriteBatch.Draw(Graphics.Walls, Camera.Pos + new Vector2(i * Graphics.SpriteSize, j * Graphics.SpriteSize), Color.White);
+            spriteBatch.Draw(Graphics.Player, Camera.Pos + Player.Pos, Color.White);
             spriteBatch.End();
 
             base.Draw(gameTime);

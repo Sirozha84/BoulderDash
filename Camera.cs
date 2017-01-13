@@ -7,20 +7,18 @@ using Microsoft.Xna.Framework;
 
 namespace BoulderDash
 {
-    static class Player
+    static class Camera
     {
-        public static int X;
-        public static int Y;
-        public static int Xi;
-        public static int Yi;
+        static int X;
+        static int Y;
 
         public static Vector2 Pos
         {
             get
             {
-                return new Vector2(X * Graphics.SpriteSize + Xi, Y * Graphics.SpriteSize + Yi);
+                //тут подвинем камеру к центру игрока
+                return new Vector2(X, Y);
             }
-
         }
     }
 }

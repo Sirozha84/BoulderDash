@@ -19,10 +19,10 @@ namespace BoulderDash
 
             for (int i = 0; i < 100; i++) { M[0, i] = 1; M[99, i] = 1; M[i, 0] = 1; M[i, 99] = 1; };
             Random RND = new Random();
-            for (int i = 0; i < 100; i++) M[RND.Next(100), RND.Next(100)] = 1;
+            for (int i = 0; i < 300; i++) M[RND.Next(100), RND.Next(100)] = 1;
 
-            Player.X = 64;
-            Player.Y = 64;
+            Player.X = 1;
+            Player.Y = 1;
         }
     }
 }
