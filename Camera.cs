@@ -9,16 +9,35 @@ namespace BoulderDash
 {
     static class Camera
     {
-        static int X;
-        static int Y;
+        public static Vector2 Pos;  //Позиция камеры
+        static Vector2 To;          //Точка стремления
+        public static int Right;    //Крайние положения для камеры (правое
+        public static int Bottom;   //..и нижнее
 
-        public static Vector2 Pos
+        /// <summary>
+        /// Инициализация камеры
+        /// </summary>
+        public static void Init()
         {
-            get
-            {
-                //тут подвинем камеру к центру игрока
-                return new Vector2(X, Y);
-            }
+            Right = Map.Width * Graphics.SpriteSize - Graphics.Width;
+            Bottom = Map.Height * Graphics.SpriteSize - Graphics.Height;
+            Update();
+            Pos = To;
+        }
+
+        /// <summary>
+        /// Наведение камеры на игрока
+        /// </summary>
+        public static void Update()
+        {
+            To.X = Player.Pos.X + Graphics.SpriteSize / 2 - Graphics.Width / 2;
+            To.Y = Player.Pos.Y + Graphics.SpriteSize / 2 - Graphics.Height / 2;
+            Pos.X += (To.X - Pos.X) / 10;
+            Pos.Y += (To.Y - Pos.Y) / 10;
+            if (Pos.X < 0) Pos.X = 0;
+            if (Pos.Y < 0) Pos.Y = 0;
+            if (Pos.X > Right) Pos.X = Right;
+            if (Pos.Y > Bottom) Pos.Y = Bottom;
         }
     }
 }

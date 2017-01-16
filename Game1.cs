@@ -15,6 +15,8 @@ namespace BoulderDash
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
+            graphics.PreferredBackBufferWidth = Graphics.Width;
+            graphics.PreferredBackBufferHeight = Graphics.Height;
             Content.RootDirectory = "Content";
         }
 
@@ -27,7 +29,6 @@ namespace BoulderDash
         protected override void Initialize()
         {
             Map.Load();
-
             base.Initialize();
         }
 
@@ -62,9 +63,13 @@ namespace BoulderDash
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
+            if (Keyboard.GetState().IsKeyDown(Keys.Left)) Player.Move(-1, 0);
+            if (Keyboard.GetState().IsKeyDown(Keys.Right)) Player.Move(1, 0);
+            if (Keyboard.GetState().IsKeyDown(Keys.Up)) Player.Move(0, -1);
+            if (Keyboard.GetState().IsKeyDown(Keys.Down)) Player.Move(0, 1);
             // TODO: Add your update logic here
-
+            Player.Update();
+            Camera.Update();
             base.Update(gameTime);
         }
 
@@ -79,9 +84,10 @@ namespace BoulderDash
             spriteBatch.Begin();
             for (int i = 0; i < Map.Width; i++)
                 for (int j = 0; j < Map.Height; j++)
-                    if (Map.M[i, j] == 1)
-                        spriteBatch.Draw(Graphics.Walls, Camera.Pos + new Vector2(i * Graphics.SpriteSize, j * Graphics.SpriteSize), Color.White);
-            spriteBatch.Draw(Graphics.Player, Camera.Pos + Player.Pos, Color.White);
+                    if (Map.M[i, j] > 0)
+                        spriteBatch.Draw(Graphics.Walls, - Camera.Pos + new Vector2(i * Graphics.SpriteSize, j * Graphics.SpriteSize),
+                            Graphics.RectByNum(Graphics.Walls, Map.M[i, j]), Color.White);
+            spriteBatch.Draw(Graphics.Player, - Camera.Pos + Player.Pos, Graphics.RectByNum(Graphics.Player, Player.Frame), Color.White);
             spriteBatch.End();
 
             base.Draw(gameTime);

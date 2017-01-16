@@ -21,8 +21,8 @@ namespace BoulderDash
             Random RND = new Random();
             for (int i = 0; i < 300; i++) M[RND.Next(100), RND.Next(100)] = 1;
 
-            Player.X = 1;
-            Player.Y = 1;
+            Player.Init(1, 1);
+            Camera.Init();
         }
     }
 }
