@@ -7,38 +7,21 @@ using Microsoft.Xna.Framework;
 
 namespace BoulderDash
 {
-    static class Player
+    class Player:Box
     {
-        public static int X;
-        public static int Y;
-        public static int Xi;
-        public static int Yi;
-        public static int Xm;
-        public static int Ym;
-        static int MoveTo;
-        static int AnF;
-        static int AnTimer;
-
         /// <summary>
         /// Инициализация игрока
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        public static void Init(int x, int y)
+        public Player(int x, int y) : base(x, y)
         {
-            X = x;
-            Y = y;
-            Xi = 0;
-            Yi = 0;
-            MoveTo = 0;
-            AnF = 0;
-            AnTimer = 0;
         }
 
         /// <summary>
         /// Позиция игрока
         /// </summary>
-        public static Vector2 Pos
+        public Vector2 Pos
         {
             get
             {
@@ -49,7 +32,7 @@ namespace BoulderDash
         /// <summary>
         /// Кадр анимации
         /// </summary>
-        public static int Frame
+        public int Frame
         {
             get
             {
@@ -69,10 +52,10 @@ namespace BoulderDash
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        public static void Move(int x, int y)
+        public void Move(int x, int y)
         {
             if (MoveTo > 0) return;
-            if (Map.M[X + x, Y + y] != 0) return;
+            if (Map.M[0, X + x, Y + y] != 0) return;
             Xm = x;
             Ym = y;
             MoveTo = 64;
@@ -81,7 +64,7 @@ namespace BoulderDash
         /// <summary>
         /// Обновление игрока
         /// </summary>
-        public static void Update()
+        public override void Update()
         {
             if (MoveTo <= 0) return;
             Xi += Xm * Global.Speed;

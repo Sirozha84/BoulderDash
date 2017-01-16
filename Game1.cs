@@ -28,7 +28,9 @@ namespace BoulderDash
         /// </summary>
         protected override void Initialize()
         {
+            Graphics.Init();
             Map.Load();
+            World.Init();
             base.Initialize();
         }
 
@@ -42,6 +44,9 @@ namespace BoulderDash
             spriteBatch = new SpriteBatch(GraphicsDevice);
             Graphics.Player = Content.Load<Texture2D>("Player");
             Graphics.Walls = Content.Load<Texture2D>("Walls");
+            Graphics.Back = Content.Load<Texture2D>("Back");
+            Graphics.Light = Content.Load<Texture2D>("Light");
+            Rock.Texture = Content.Load<Texture2D>("Rock");
             // TODO: use this.Content to load your game content here
         }
 
@@ -63,13 +68,16 @@ namespace BoulderDash
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            if (Keyboard.GetState().IsKeyDown(Keys.Left)) Player.Move(-1, 0);
-            if (Keyboard.GetState().IsKeyDown(Keys.Right)) Player.Move(1, 0);
-            if (Keyboard.GetState().IsKeyDown(Keys.Up)) Player.Move(0, -1);
-            if (Keyboard.GetState().IsKeyDown(Keys.Down)) Player.Move(0, 1);
+            if (Keyboard.GetState().IsKeyDown(Keys.Left)) World.player1.Move(-1, 0);
+            if (Keyboard.GetState().IsKeyDown(Keys.Right)) World.player1.Move(1, 0);
+            if (Keyboard.GetState().IsKeyDown(Keys.Up)) World.player1.Move(0, -1);
+            if (Keyboard.GetState().IsKeyDown(Keys.Down)) World.player1.Move(0, 1);
             // TODO: Add your update logic here
-            Player.Update();
+            World.player1.Update();
             Camera.Update();
+            World.Update();
+            World.Rocks.ForEach(o => o.Update());
+            World.Rocks.RemoveAll(o => o.Destroyed);
             base.Update(gameTime);
         }
 
@@ -82,12 +90,23 @@ namespace BoulderDash
             GraphicsDevice.Clear(Color.Black);
 
             spriteBatch.Begin();
+            //spriteBatch.Draw(Graphics.Back, Graphics.Full, Color.White);
             for (int i = 0; i < Map.Width; i++)
                 for (int j = 0; j < Map.Height; j++)
-                    if (Map.M[i, j] > 0)
-                        spriteBatch.Draw(Graphics.Walls, - Camera.Pos + new Vector2(i * Graphics.SpriteSize, j * Graphics.SpriteSize),
-                            Graphics.RectByNum(Graphics.Walls, Map.M[i, j]), Color.White);
-            spriteBatch.Draw(Graphics.Player, - Camera.Pos + Player.Pos, Graphics.RectByNum(Graphics.Player, Player.Frame), Color.White);
+                {
+                    //if (Map.M[1, i, j] > 0)
+                    spriteBatch.Draw(Graphics.Walls, -Camera.Pos + new Vector2(i * Graphics.SpriteSize, j * Graphics.SpriteSize),
+                            Graphics.RectByNum(Graphics.Walls, Map.M[0, i, j]), Color.Red);
+                    spriteBatch.Draw(Graphics.Walls, -Camera.Pos + new Vector2(i * Graphics.SpriteSize, j * Graphics.SpriteSize),
+                            Graphics.RectByNum(Graphics.Walls, Map.M[1, i, j]), Color.White);
+                }
+            //Игрок
+            spriteBatch.Draw(Graphics.Player, World.player1.Pos - Camera.Pos, Graphics.RectByNum(Graphics.Player, World.player1.Frame), Color.White);
+            //Объекты
+            foreach (Box o in World.Rocks)
+                spriteBatch.Draw(Rock.Texture, o.Pos - Camera.Pos, Graphics.RectByNum(Rock.Texture, 1), Color.White);
+
+            spriteBatch.Draw(Graphics.Light, Graphics.Full, Color.White);
             spriteBatch.End();
 
             base.Draw(gameTime);

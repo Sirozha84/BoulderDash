@@ -30,8 +30,8 @@ namespace BoulderDash
         /// </summary>
         public static void Update()
         {
-            To.X = Player.Pos.X + Graphics.SpriteSize / 2 - Graphics.Width / 2;
-            To.Y = Player.Pos.Y + Graphics.SpriteSize / 2 - Graphics.Height / 2;
+            To.X = World.player1.Pos.X + Graphics.SpriteSize / 2 - Graphics.Width / 2;
+            To.Y = World.player1.Pos.Y + Graphics.SpriteSize / 2 - Graphics.Height / 2;
             Pos.X += (To.X - Pos.X) / 10;
             Pos.Y += (To.Y - Pos.Y) / 10;
             if (Pos.X < 0) Pos.X = 0;

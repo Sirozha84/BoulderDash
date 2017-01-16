@@ -8,8 +8,16 @@ namespace BoulderDash
         public const int Width = 800;
         public const int Height = 480;
         public const int SpriteSize = 64;
+        public static Rectangle Full;
         public static Texture2D Player;
         public static Texture2D Walls;
+        public static Texture2D Back;
+        public static Texture2D Light;
+
+        public static void Init()
+        {
+            Full = new Rectangle(0, 0, Width, Height);
+        }
 
         /// <summary>
         /// Фрагмент текстуры по номеру спрайта

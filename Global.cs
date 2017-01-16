@@ -8,6 +8,6 @@ namespace BoulderDash
 {
     static class Global
     {
-        public const int Speed = 16;
+        public const int Speed = 8;
     }
 }
